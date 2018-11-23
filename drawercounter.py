@@ -4,7 +4,7 @@ import locale
 from prettytable import PrettyTable
 
 
-locale.setlocale(locale.LC_ALL, 'en_US')
+locale.setlocale(locale.LC_ALL, '')
 
 
 DENOMINATIONS = {
