@@ -105,13 +105,14 @@ class Drawer:
         if "input" in kwargs:
             for k in ORDER:
                 data[k] = get_input(NUMERICS[k] + " x :") * DENOMINATIONS[k]
-        for k, v in data.items():
-            cents = int(v)
-            if k not in DENOMINATIONS:
-                raise ValueError("Unknown denomination: %s" % k)
-            if not isinstance(v, int):
-                raise ValueError("%s is not type int" % k)
-            self.denominations[k] = cents
+                for k, v in data.items():
+                    cents = int(v)
+                    if k not in DENOMINATIONS:
+                        raise ValueError("Unknown denomination: %s" % k)
+                    if not isinstance(v, int):
+                        raise ValueError("%s is not type int" % k)
+                    self.denominations[k] = cents
+                print(self.display())
 
     def display(self):
         table = PrettyTable(["Denomination", "Count", "Value"])
@@ -120,8 +121,12 @@ class Drawer:
         table.align["Value"] = 'r'
         total = 0
         for k in ORDER:
-            cents = self.denominations[k]
-            count = int(cents / DENOMINATIONS[k])
+            try:
+                cents = self.denominations[k]
+                count = int(cents / DENOMINATIONS[k])
+            except KeyError:
+                cents = 0
+                count = 0
             table.add_row([NUMERICS[k], count, humanize(cents)])
             total += cents
         table.add_row(["TOTAL", "", humanize(total)])
